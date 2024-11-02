@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 5 REST Endpoints</title>
+</head>
+<body>
+    <h1>Lab 5 REST Endpoints</h1>
+
+    <!-- Password Quality Section -->
+    <section>
+        <h2>Check Password Quality</h2>
+        <input type="password" id="passwordInput" placeholder="Enter your password">
+        <button onclick="checkPassword()">Check Password</button>
+        <p id="passwordResult"></p>
+    </section>
+
+    <!-- Email Validity Section -->
+    <section>
+        <h2>Email Validity Check</h2>
+        <input type="email" id="emailInput" placeholder="Enter your email">
+        <button onclick="checkEmail()">Check Email</button>
+        <p id="emailResult"></p>
+    </section>
+
+    <!-- Quiz Questions Section -->
+    <section>
+        <h2>Quiz Questions</h2>
+        <button onclick="loadQuiz()">Load Questions</button>
+        <ul id="quizList"></ul>
+    </section>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById("passwordInput").value;
+            fetch('/api/password-quality', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `password=${encodeURIComponent(password)}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("passwordResult").innerText = `Password Status: ${data}`;
+            });
+        }
+
+        function checkEmail() {
+            const email = document.getElementById("emailInput").value;
+            fetch('/api/email-check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `email=${encodeURIComponent(email)}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("emailResult").innerText = `Email Status: ${data}`;
+            });
+        }
+
+        function loadQuiz() {
+            fetch('/api/quiz')
+            .then(response => response.json())
+            .then(questions => {
+                const quizList = document.getElementById("quizList");
+                quizList.innerHTML = "";
+                questions.forEach(question => {
+                    const li = document.createElement("li");
+                    li.textContent = question;
+                    quizList.appendChild(li);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

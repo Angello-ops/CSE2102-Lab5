@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 5 REST Endpoints</title>
+</head>
+<body>
+    <h1>Lab 5 REST Endpoints</h1>
+
+    <!-- Email Input Section -->
+    <section>
+        <h2>Email Validity Check</h2>
+        <label for="emailInput">Enter your email:</label>
+        <input type="email" id="emailInput" placeholder="Enter your email">
+        <button onclick="checkEmailValidity()">Check Email</button>
+        <p id="emailResult"></p>
+    </section>
+
+    <!-- Password Input Section -->
+    <section>
+        <h2>Check Password Quality</h2>
+        <label for="passwordInput">Enter your password:</label>
+        <input type="password" id="passwordInput" placeholder="Enter your password">
+        <button onclick="checkPasswordQuality()">Check Quality</button>
+        <p id="passwordResult"></p>
+    </section>
+
+    <!-- Quiz Questions Section -->
+    <section>
+        <h2>Get Quiz Questions</h2>
+        <button onclick="getQuizQuestions()">Load Questions</button>
+        <ul id="quizList"></ul>
+    </section>
+
+    <script>
+        // Function to check email validity
+        async function checkEmailValidity() {
+            const email = document.getElementById("emailInput").value;
+            if (email === "") {
+                document.getElementById("emailResult").innerText = "Please enter an email.";
+                return;
+            }
+            const response = await fetch('/api/email-check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: email
+            });
+            const result = await response.text();
+            document.getElementById("emailResult").innerText = `Email Status: ${result}`;
+        }
+
+        // Function to check password quality
+        async function checkPasswordQuality() {
+            const password = document.getElementById("passwordInput").value;
+            if (password === "") {
+                document.getElementById("passwordResult").innerText = "Please enter a password.";
+                return;
+            }
+            const response = await fetch('/api/password-quality', {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: password
+            });
+            const result = await response.text();
+            document.getElementById("passwordResult").innerText = `Password Quality: ${result}`;
+        }
+
+        // Function to get quiz questions
+        async function getQuizQuestions() {
+            const response = await fetch('/api/quiz');
+            const questions = await response.json();
+            const quizList = document.getElementById("quizList");
+            quizList.innerHTML = "";  // Clear previous questions
+            questions.forEach(question => {
+                const listItem = document.createElement("li");
+                listItem.textContent = question;
+                quizList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
