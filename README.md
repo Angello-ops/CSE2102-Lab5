@@ -12,10 +12,9 @@ To get the system up and running, follow these three simple steps:
    cd CSE-2102-Lab5
 
 Run the Application:
+Method 1: Use Maven Wrapper in your local operating system's terminal (outside of Codespace): ./mvnw spring-boot:run
 
-    Method 1: Use Maven Wrapper in your local operating system's terminal (outside of Codespace): ./mvnw spring-boot:run
-
-Method 2: Run the compiled .jar file directly (ensure you have Java installed): java -jar target/demo-0.0.1-SNAPSHOT.jar via terminal
+Method 2: Run the compiled .jar file directly (ensure you have Java installed): java -jar target/demo-0.0.1-SNAPSHOT.jar via terminal or click it as a shortcut
 
 Access the Application:
 
