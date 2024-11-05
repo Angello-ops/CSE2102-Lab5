@@ -15,7 +15,7 @@ Run the Application:
 
     Method 1: Use Maven Wrapper in your local operating system's terminal (outside of Codespace): ./mvnw spring-boot:run
 
-Method 2: Run the compiled .jar file directly (ensure you have Java installed): java -jar target/demo-0.0.1-SNAPSHOT.jar
+Method 2: Run the compiled .jar file directly (ensure you have Java installed): java -jar target/demo-0.0.1-SNAPSHOT.jar via terminal
 
 Access the Application:
 
