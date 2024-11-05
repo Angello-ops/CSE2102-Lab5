@@ -1,7 +1,7 @@
 # Lab 5: REST API Service Overview
 
 ## Project Overview
-This project is a REST API service built with Spring Boot as part of CSE-2102 Lab 5. The application provides endpoints for password quality checks, email validity checks, and quiz question retrieval. The repository is set up to be easy to run and evaluate by the grader or instructor.
+This project is a REST API service built with Spring Boot as part of CSE-2102 Lab 5. The application provides endpoints for password quality checks, email validity checks, and quiz question retrieval.
 
 ## Quick Start Guide
 To get the system up and running, follow these three simple steps:
