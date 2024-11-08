@@ -42,12 +42,12 @@ This separation follows the **Single Responsibility Principle (SRP)**, ensuring 
  ```bash
 ./mvnw clean
 ./mvnw install
-./mvnw spring-boot:run
+./mvnw spring-boot:run```
    
  method1
  ```bash
-./mvnw spring-boot:run
+./mvnw spring-boot:run```
 
 method2
 ```bash
-java -jar 'location/of/jar/file'
+java -jar 'location/of/jar/file'```
