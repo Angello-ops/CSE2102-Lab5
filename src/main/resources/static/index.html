@@ -3,78 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 5 REST Endpoints</title>
+    <title>Lab 5 Interactive Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .question {
+            font-weight: bold;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .result {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lab 5 REST Endpoints</h1>
 
-    <!-- Password Quality Section -->
-    <section>
-        <h2>Check Password Quality</h2>
-        <input type="password" id="passwordInput" placeholder="Enter your password">
-        <button onclick="checkPassword()">Check Password</button>
-        <p id="passwordResult"></p>
-    </section>
+<div class="container">
+    <h1>Password Quality Check</h1>
+    <input type="password" id="passwordInput" placeholder="Enter your password">
+    <button onclick="checkPassword()">Check Password</button>
+    <p id="passwordResult"></p>
+</div>
 
-    <!-- Email Validity Section -->
-    <section>
-        <h2>Email Validity Check</h2>
-        <input type="email" id="emailInput" placeholder="Enter your email">
-        <button onclick="checkEmail()">Check Email</button>
-        <p id="emailResult"></p>
-    </section>
+<div class="container">
+    <h1>Email Validity Check</h1>
+    <input type="email" id="emailInput" placeholder="Enter your email">
+    <button onclick="checkEmail()">Check Email</button>
+    <p id="emailResult"></p>
+</div>
 
-    <!-- Quiz Questions Section -->
-    <section>
-        <h2>Quiz Questions</h2>
-        <button onclick="loadQuiz()">Load Questions</button>
-        <ul id="quizList"></ul>
-    </section>
+<div class="container">
+    <h1>Interactive True/False Quiz</h1>
+    <button onclick="loadQuiz()">Start Quiz</button>
+    <div id="quizContainer"></div>
+</div>
 
-    <script>
-        function checkPassword() {
-            const password = document.getElementById("passwordInput").value;
-            fetch('/api/password-quality', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `password=${encodeURIComponent(password)}`
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("passwordResult").innerText = `Password Status: ${data}`;
-            });
-        }
+<script>
+    // Password Quality Check
+    function checkPassword() {
+        const password = document.getElementById("passwordInput").value;
+        fetch('/api/password-quality', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `password=${encodeURIComponent(password)}`
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("passwordResult").innerText = `Password Status: ${data}`;
+        })
+        .catch(error => {
+            document.getElementById("passwordResult").innerText = "Error checking password. Please try again.";
+        });
+    }
 
-        function checkEmail() {
-            const email = document.getElementById("emailInput").value;
-            fetch('/api/email-check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `email=${encodeURIComponent(email)}`
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("emailResult").innerText = `Email Status: ${data}`;
-            });
-        }
+    // Email Validity Check
+    function checkEmail() {
+        const email = document.getElementById("emailInput").value;
+        fetch('/api/email-check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `email=${encodeURIComponent(email)}`
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("emailResult").innerText = `Email Status: ${data}`;
+        })
+        .catch(error => {
+            document.getElementById("emailResult").innerText = "Error checking email. Please try again.";
+        });
+    }
 
-        function loadQuiz() {
-            fetch('/api/quiz')
+    // Load Quiz Questions
+    function loadQuiz() {
+        fetch('/api/quiz')
             .then(response => response.json())
             .then(questions => {
-                const quizList = document.getElementById("quizList");
-                quizList.innerHTML = "";
-                questions.forEach(question => {
-                    const li = document.createElement("li");
-                    li.textContent = question;
-                    quizList.appendChild(li);
-                });
+                const quizContainer = document.getElementById("quizContainer");
+                quizContainer.innerHTML = ""; // Clear previous questions
+
+                for (const [question, correctAnswer] of Object.entries(questions)) {
+                    const questionDiv = document.createElement("div");
+                    questionDiv.innerHTML = `
+                        <p class="question">${question}</p>
+                        <div class="buttons">
+                            <button onclick="checkAnswer('${question}', 'True')">True</button>
+                            <button onclick="checkAnswer('${question}', 'False')">False</button>
+                        </div>
+                        <p class="result" id="result-${question}"></p>
+                    `;
+                    quizContainer.appendChild(questionDiv);
+                }
             });
-        }
-    </script>
+    }
+
+    // Check Quiz Answer
+    function checkAnswer(question, answer) {
+        fetch('/api/check-answer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `question=${encodeURIComponent(question)}&answer=${encodeURIComponent(answer)}`
+        })
+        .then(response => response.text())
+        .then(result => {
+            document.getElementById(`result-${question}`).innerText = result;
+        });
+    }
+</script>
+
 </body>
 </html>
