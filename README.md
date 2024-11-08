@@ -38,6 +38,12 @@ This separation follows the **Single Responsibility Principle (SRP)**, ensuring 
    git clone https://github.com/Angello-ops/CSE-2102-Lab5.git
    cd CSE-2102-Lab5
 2. **run with spring**:
+   NOTE: type the following commands before running it to ensure its working
+ ```bash
+./mvnw clean
+./mvnw install
+./mvnw spring-boot:run
+   
  method1
  ```bash
 ./mvnw spring-boot:run
