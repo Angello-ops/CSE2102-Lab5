@@ -43,11 +43,11 @@ This separation follows the **Single Responsibility Principle (SRP)**, ensuring 
 ./mvnw clean
 ./mvnw install
 ./mvnw spring-boot:run
-   
+ ```  
 method1
 ```
 ./mvnw spring-boot:run
-
+```
 method2
 ```
 java -jar 'location/of/jar/file'
